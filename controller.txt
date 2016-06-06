@@ -1,0 +1,4 @@
+[controller]
+	$setViewValue:[controller].$setViewValue();
+	$viewValue:
+	$render:[controller].$render();
