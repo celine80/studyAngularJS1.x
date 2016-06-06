@@ -1,0 +1,46 @@
+filter
+	methods
+		currency:用两个小数位和一个货币符号来格式化数字。
+			{{currency:}}
+		date:{{new Date().getTime()|yyyy-mm-dd}}
+		number:{{someNumbers|number:2}}
+		lowercase\uppercase
+		json:<pre>{{someObject|json}}</pre>
+	管道符 & 冒号：管道符用来接过滤方法名后面加冒号跟参数，多个参数用冒号分隔。
+	通配符：$.
+		<input ng-model="criteria" type="text"/>
+		ng-repeat ="item in backiog filter:{ $: criteria, done:false}"
+	过滤条件：
+		1>字符串;
+		2>对象:
+			ng-repeat="item in array"
+		3>函数(称为 predicate 函数)：
+			$scope.doneEffect=function(){return /c/i.test(item.name)&&(item.age>10);};
+			ng-repeat="item in array|filter:doneEffect"
+			ng-repeat="item in array|filter:st||doneEffect"//可以使用或者符号
+	数组变换过滤器：
+		limitTo,Filter,orderBy
+		以上过滤方法只对数组有效，对于其他对象类型没有任何作用，只会单纯地返回原对象。
+		orderBy
+			表达式法：{{ orderBy_expression | orderBy : expression : reverse}}
+			js 语法：$filter('orderBy')(array, expression, reverse);
+				var orderBy = $filter('orderBy');
+		方法具体细节：
+			orderBy:sortField:reverse.
+				sortField:用于排序依据的属性名。
+				reverse:只是排序数组是否反转顺序。
+			//代码
+			$scope.sortField=undefined;
+			$scope.reverse=false;
+			$scope.sort=function(fieldName){
+				if($scope.sortField===fieldName){
+					$scope.reverse=!$scope.reverse;
+				}else{
+					$scope.sortField=fieldName;
+					$scope.reverse=false;
+				}
+			}
+			$scope.isSortDown=function(fieldName){
+				return $scope.sortField===fieldName && $scope.reverse;
+			}
+			
