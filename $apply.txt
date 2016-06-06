@@ -1,0 +1,4 @@
+$scope.$apply
+自定义函数用于 angular 环境中运行时。
+  语法示例：[$scope].$apply("[functionname]()");//接收字符串形式的。相当于 eval("functionname"+".apply"+"([$scope])")？
+    可以使用[$scope].$apply(functionProperty)?????
