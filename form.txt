@@ -1,0 +1,33 @@
+△form
+	input
+		properties in [formname][inputname]{//如下列出一个 form 中的 input 元素对象其所具备的属性。 input 已经作为指令由 angularjs 管理。
+			"$viewValue":"igor, misko, vojta",
+			"$modelValue":["igor","misko","vojta"],
+			"$validators":{},
+			"$asyncValidators":{},
+			"$parsers":[null],
+			"$formatters":[null,null],
+			"$viewChangeListeners":[],
+			"$untouched":true,
+			"$touched":false,
+			"$pristine":true,
+			"$dirty":false,
+			"$valid":true,
+			"$invalid":false,
+			"$error":{required:false},//return $error 当 required 返回 true 时，$error.required==false。所以是对应的验证属性会塞到该对象中，其隐射到实际属性的相反值？
+				如<input ng-model="" ng-list required type="text"/>该表单的$error对象中包含 required 属性。求反证？
+			"$name":"namesInput",
+			"$options":null
+			}
+		$invalid:
+		$error:
+	表单指令：
+		required：校验委托。表示让 angularjs 自动对表单进行校验。该结果关联到表单的 [form.name].$invalid 属性值。
+		ng-disabled="[form.name].$invalid" 校验结果来确定 ng-disabled的值。
+	模拟表单项：
+		可以借助 angularjs 来模拟表单项：
+			contentEditable：这是一个属性指令。
+				注：编写对应的指令时，不需要添加 restrict 限制。指令名称对应到属性的全小写(contenteditable)。
+			title:鼠标 hover 时浏览器显示 title 以用于提醒。
+			<div contentEditable="true" ng-model="content" title="click to edit">some</div>
+		特点：可以防止 hack 行为。
