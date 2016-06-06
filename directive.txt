@@ -20,9 +20,9 @@ dirctive
 				①操作 DOM；
 				②绑定事件监听器。
 				③响应指令，实现双向绑定。
-			function(scope,element,attrs,parent.controller)
-			父控制器可选，当前指令有依赖指令时，才会有该参数。
-			scope 就是当下模板所产生的 DOM 对应的 scope。按照域链本质可知其能访问父级属性。
+			语法：function(scope,element,attrs,parent.controller)
+				1>父控制器可选，当前指令有依赖指令时，才会有该参数。
+				2>scope 就是当下模板所产生的 DOM 对应的 scope。按照域链本质可知其能访问父级属性。
 			>内部调用的方法可以有三种方案：
 				1>scope.controller.fn()\scope.fn()
 				2>scope.$apply("[controllername].fn()")\scope.$apply("fn()").
