@@ -1,0 +1,62 @@
+$location
+	methods:
+		absUrl():只读
+			return full url.
+		url([url]):可读写
+			没有参数：返回 url。只包含路径、参数、哈希(路径及向后的内容，without base prefix) /path?a=b#hash
+			有参数:?
+		protocol():只读。
+		host():只读。如果有端口，则会包含端口。
+		port():只读。
+		path([path]):可读写。
+		search(search,[paramValue]):可读写。
+			没参数：返回对象类型的 search 内容。
+			有参数：返回$location.
+				search:
+					1>string or hash object;
+						1.1>called with a single argument act as a setter:
+							设置$location 的 search 元件的指定值。
+							eg:
+							$location.search({'food':'fruits'});//重写 search。
+							$location.search('food','fruits');//单值设置
+						1.2>hash object containing an array of values。
+							重写 search，并将键值对编码后赋值给 search。
+							eg:$location.search({name:'celi&what=323','company':'dianrong'});
+								地址为：url#?name=celi%26what%3D323&company=dianrong
+				paramValue:
+					1>typeof paramValue === string||number
+						重写一个单独的 search 属性。
+					2>typeof paramValue === array
+						重写第一个参数指定在$location 的 search component中的属性。
+					3>typeof paramValue === null
+						删除指定属性。
+					4>typeof paramValue === true
+						添加一个没有值没有等于号后缀的属性。
+				sample:
+					$location.search('drink','water');//有则重写，无则添加。
+					$location.search(obj);//重写 search 值，将 obj 转化为键值对赋值给$location的 search 属性。    
+					$location.search('drink',[1,2,3,4]);//#?drink=1&drink=2&drink=3&drink=4 在原有的 search 属性中添加重复
+					$location.search('drink',null);//删掉 drink 属性。
+					$location.search('drink');//重写 search component,其等于#?drink.            
+					$location.search('drink',true);//添加一个没有值的drink属性#?k=v&k=v&drink.
+		hash([hash]):可读写。
+			没参数：返回 hash fragment。
+			有参数：返回$location.  
+				参数：类型：string||number.个数：只处理第一个参数。
+				作用：重写 hash fragment。
+		
+		replace():
+			调用了则替换掉当前的历史记录。
+			all changes to $location during the current $digest will replace the current history record, instead of adding a new one.
+		state([state]):可读写。
+			没参数：返回 history state object。
+			有参数：接收一个参数。返回$location.
+			注意：仅仅适用于 html5 对 IE9 or Android < 4.0不适用。因调用的是 html5的 history api。
+	Events：
+		$locationChangeStart
+			1>This change can be prevented by calling preventDefault method of the event. 
+			2>仅适用于支持 html5 history api 的浏览器。
+			3>广播式事件。
+		$locationChangeSuccess
+			//
+	依赖:$rootElement>html.ng-scope
