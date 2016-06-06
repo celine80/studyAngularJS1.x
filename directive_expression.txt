@@ -1,20 +1,23 @@
 指令 vs 表达式
-  语法表达：
-    1>指令的值不需要大括号。<div ng-init="info='hello,world'"><input ng-model="info" type="text"></div>
-		2>html 属性的值需要引号圈住双大括号。标签内容用双大括号。
-		3>自定义非 angular 指令属性时，如果需要传的是字符串则需要双大括号，如果传的是对象，则无需双大括号。---如果传递的是属性名，则不需要大括号，否则需要。
-		<div ng-init="initFlavor='beer'"><drink flavor="{{initFlavor}}"></drink></div>
-		myModule.directive("drink",function(){return{scope:{flavor:"@"},template:'<div>{{flavor}}</div>'};});
-		<div ng-init="initFlavor='beer'"><drink flavor="initFlavor"></drink></div>
-		myModule.directive("drink",function(){return{scope:{flavor:"="},template:'<input ng-model="flavor" type="text"/>'};});
-	指令本质：
-		ngBind\ngApp
-		1>指令方法用来添加或重写指令的运行规范，实现对视图的控制和对视图元素(html 标签)的互动(如添加事件绑定和行为监听)。
-		angular 本质上就是对 html 的所有标签进行托管，而其最终在视图上的样式表现、行为监听和事件绑定等的实现就是通过指令。其自身发指令非常丰富，包含 ngModel、ngBind 等等。
-		2>指令值将被 angularjs 用来编译运行获得其返回值，类似于 function(){return eval([作为字符串的指令值])}
-			eg:<div ng-init="tel='11位数字'"><input ng-checked="tel.length===11" type="checkbox"/>
-			<span ng-class-odd="'odd'" ng-class-even="'even'">//class 的值最后为 odd 和 even。
-			<input ng-copy="copied=true" ng-init="copied=false; value='copy me'" ng-model="value">//当事件触发时，运行表达式，copied等于 true。
-			<button ng-click="userForm.userName.$rollbackViewValue(); user.name=''">Clear</button>
-		3>
+一般指令包括:
+	expression:
+	attributer:ng-class,ng-show,ng-hide,ng-init。
+语法表达：
+  1>指令的值不需要大括号。<div ng-init="info='hello,world'"><input ng-model="info" type="text"></div>
+	2>html 属性的值需要引号圈住双大括号。标签内容用双大括号。
+	3>自定义非 angular 指令属性时，如果需要传的是字符串则需要双大括号，如果传的是对象，则无需双大括号。---如果传递的是属性名，则不需要大括号，否则需要。
+	<div ng-init="initFlavor='beer'"><drink flavor="{{initFlavor}}"></drink></div>
+	myModule.directive("drink",function(){return{scope:{flavor:"@"},template:'<div>{{flavor}}</div>'};});
+	<div ng-init="initFlavor='beer'"><drink flavor="initFlavor"></drink></div>
+	myModule.directive("drink",function(){return{scope:{flavor:"="},template:'<input ng-model="flavor" type="text"/>'};});
+指令本质：
+	ngBind\ngApp
+	1>指令方法用来添加或重写指令的运行规范，实现对视图的控制和对视图元素(html 标签)的互(如添加事件绑定和行为监听)。
+	angular 本质上就是对 html的所有标签进行托管，而其最终在视图上的样式表现、行为监听和事件绑定等的实现就是通过指令。其自身发指令非常丰富，包含 ngModel、ngBind 等等。
+	2>指令值将被 angularjs 用来编译运行获得其返回值，类似于 function(){return eval([作为字符串的指令值])}
+		eg:<div ng-init="tel='11位数字'"><input ng-checked="tel.length===11" type="checkbox"/>
+		<span ng-class-odd="'odd'" ng-class-even="'even'">//class 的值最后为 odd 和 even。
+		<input ng-copy="copied=true" ng-init="copied=false; value='copy me'" ng-model="value">//当事件触发时，运行表达式，copied等于 true。
+		<button ng-click="userForm.userName.$rollbackViewValue(); user.name=''">Clear</button>
+	3>
 	
