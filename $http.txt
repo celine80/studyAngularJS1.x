@@ -1,0 +1,65 @@
+$http
+	$http({
+			method:'GET',
+			url:''
+			//configurationObject
+		}).then(function sucessCabllback(response){
+		},function errorCallback(response){
+		});
+	注：1.5版本中提示之前用 promise 方法调 success 和 error的方式已经被放弃。
+	configurationObject:
+		method:string.toUpperCase();
+		url:string;
+		headers:object;//重写headers 属性，还仅针对同 key属性？？？？？？？？
+		data:object;//post in need
+	response object:
+		data:{string|object},
+		status:{number},//200~299触发 sucessCallback。
+		headers:{function([headerName])},
+		config:{Object},
+		statusText:{string}。
+	Shortcut methods
+		$http.fn
+			fn:
+				get:(url,config)
+				head:()
+				post:(url,data,config)
+				put:
+				delete:
+				jsonp:
+				patch:
+	Setting HTTP Headers
+		HTTP headers将有$http service 自动添加到所有请求。这些默认属性可以通过$httpProvider.defaults.headers配置对象，被 fully 配置。
+		$httpProvider.defaults.headers包含如下默认配置：
+			common
+			post
+			put
+		>1常规设置(添加)默认头。
+			如添加 get 的默认配置项，则相应添加方法的全小写属性到 headers 中，并赋值即可：
+				$httpProvider.defaults.get={'My-Header':'value'};
+		>2运行时设置默认头 defaults
+			module.run(function($http) {
+				$http.defaults.headers.common.Authorization = 'Basic YmVlcDpib29w';
+			});
+		>3 在调用$http 请求时，通过配置项中的属性 headers 设置。
+			$http({
+				method: 'POST',
+				url: 'http://example.com',
+				headers: {
+					'Content-Type': undefined
+				},
+				data: { test: 'test' }
+			});
+	Transforming Requests and Responses
+		//
+	Default Transformations
+		//
+	Overriding the Default Transformations Per Request
+		//
+	Caching
+		1>默认$http 响应不缓存。
+			缓存设置方法：
+				1,cache all responses - set the default cache value to TRUE or to a cache object.
+				2,cache a specific response - set config.cache value to TRUE or to a cache object.
+		2>如果caching 可用，但default cache 和 config.cache 两者没有一个设给 cache object,则默认使用$cacheFactory($http)对象。
+		3>....
