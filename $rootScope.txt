@@ -1,0 +1,69 @@
+$rootScope(type in module ng):
+	Methods
+		$rootScope.Scope([providers],[instanceCache]):return newly created scope.
+			[providers]:"ng" by default.?
+			[instanceCache]:?
+		$new(isolate,parent):新创建子域(child scope).
+			info:
+				the parent scope will propagate the $digest() event.
+				The scope can be removed from the scope hierachy using $destroy().
+			params:
+				isolate:
+					type:boolean.
+					true:创建一个不从原型继承父作用域，该域是孤立的，不能看到父作用域属性。
+				parent:
+					type:Scope.可选属性。
+					该父级将作为该新创建的 scope 的$parent.如果没有指定，默认等于当前环境的 this(default:this)。
+					通常用于 transclude scope。
+			sample:
+				var child=$rootScope.$new();
+		$watch(watchExpression,listener,[objectEquality]:
+			info:
+				注册一事件侦听回调(listener callback)，在 watchExpression 改变的时候执行。
+			parameters:
+				watchExpression:
+		$watchGroup(watchExpressions,listener);
+			info:
+				//
+		$watchCollection(obj,listener);
+		$digest();
+			info:
+				//
+			parameters:
+				//
+			//
+		$destroy():
+			$destroy 用来从删除子域的。parent.$destroy(childScope);
+			scope被毁之前，会 在当前域上 broadcaste 一个$destroy event.
+			注：AngularJS中，有一个$destroy 的 jQuery event,用以在元素被移除 DOM 之前，清除 DOM 绑定。
+		$eval([expression],[locals]);
+			sample:
+				var scope=ng.$rootScope.Scope();
+				scope.a=1;scope.b=2;
+				scope.$eval('a+b');
+		$evalAsync([expression],[locals]);
+		$apply
+		$applyAsync([exp]);
+			//
+		$on(name,listener);
+			listener:function(event,args){}.event包含属性：
+				targetScope:
+				currentScope:处理事件的 scope。
+					疑问：Once the event propagates through the scope hierarchy, this property is set to null.？？？？
+				name:{string},event name.
+				stopPropagation - {function=}
+					available only for events that were $emit-ed.
+				preventDefault - {function}: calling preventDefault sets defaultPrevented flag to true.
+				defaultPrevented - {boolean}: true if preventDefault was called.
+		$emit(name,args);
+			冒泡式。向域层级派发事件，通知注册的侦听器。
+			先触发当前域中的侦听，然后贯越至根域，并且一路触发所有注册侦听器。事件将停止冒泡，如果有侦听器取消(cancels it)它。
+			The event life cycle starts at the scope on which $emit was called. All listeners listening for name event on this scope get notified.
+		$broadcast(name,args);
+			向下分发事件到所有子域，通知侦听器。捕获式。
+			The event life cycle starts at the scope on which $broadcast was called. All listeners listening for name event on this scope get notified. Afterwards, the event propagates to all direct and indirect scopes of the current scope and calls all registered listeners along the way. The event cannot be canceled（不能被取消不能被取消）。
+	Events
+		$destroy:
+			一个域及其子域被毁前以 broadcast 方式传播该事件。
+			propeties:
+				$id,$parent,$root.
