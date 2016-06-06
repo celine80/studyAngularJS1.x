@@ -32,9 +32,9 @@ dirctive
 				->link中的调用语法为：scope.$apply(attrs.howtoload);
 				需要注意：1>属性在被转化到 attrs 对象时，其 key 都被转化为小写，即使是驼峰写法，调用时也要转成全小写。
 				2>直接调用属性，不要当成方法调用，不需要加小括号。
-		>>注：
-			>1.对于指令的每个实例，link 函数都会运行一次。
-			>2.只会返回 postLink 函数。如果需要修改 DOM 结构，应该在 postLink 中来完成，如果在 preLink 中做，则会导致报错。
+			>>注：
+				>1.对于指令的每个实例，link 函数都会运行一次。
+				>2.只会返回 postLink 函数。如果需要修改 DOM 结构，应该在 postLink 中来完成，如果在 preLink 中做，则会导致报错。
 		replace:
 			默认为 false,如果设置为 true,则模板会替换掉指令标签，和指令属性所依赖标签等。
 			如果 template:"<h3>hello,angular</h3>对应指令hello
@@ -54,13 +54,13 @@ dirctive
 				用于事件型。
 				指令标签：<hello Greeting="sayHello(word)"></hello>
 				指令返回对象：return{scope:{greeting:"&"},template:'<input ng-model="saying" type="text"/><br/><button ng-click="greeting({wording:saying})"'}
-				注：1>指令标签的属性在被指令方法调用时，分两种情况：
-				①指令命名时用驼峰规则，使用时用-分割各单词。如：定义myDirective，使用时像这样：<my-directive>。
-				发现带连接符的('-'、'_')，属性名转化为 camel 形式调用。
-				②不带连接符的，属性名转化为toLowerCase的形式调用。
-				2>指令标签属性可以通过直接匹配调用法scope{[attr]:"@||#||&"}或 scope{[customizeAttrName:"@||#||&"+[attr]]}。
-				3>①自定义属性一旦定义，则其相当于重写指令元素的$scope，将使得指令标签及其子标签无法获取 parentScope 属性。
-				②自定义在 scope 中的属性可以直接为 template及 templateurl 中的指令所用。
+			>>注：1>指令标签的属性在被指令方法调用时，分两种情况：
+			①指令命名时用驼峰规则，使用时用-分割各单词。如：定义myDirective，使用时像这样：<my-directive>。
+			发现带连接符的('-'、'_')，属性名转化为 camel 形式调用。
+			②不带连接符的，属性名转化为toLowerCase的形式调用。
+			2>指令标签属性可以通过直接匹配调用法scope{[attr]:"@||#||&"}或 scope{[customizeAttrName:"@||#||&"+[attr]]}。
+			3>①自定义属性一旦定义，则其相当于重写指令元素的$scope，将使得指令标签及其子标签无法获取 parentScope 属性。
+			②自定义在 scope 中的属性可以直接为 template及 templateurl 中的指令所用。
 	
 		controller:
 			function($scope)
