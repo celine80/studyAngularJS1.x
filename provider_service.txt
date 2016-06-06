@@ -1,0 +1,27 @@
+⭐️服务： Service、 Factory、 Provider 都是 Provider 。 
+	服务分成内置服务和自定义服务。内置服务包括provider 中的属性对象：
+		provider & $http & service
+		注入到 controller        
+		$q->service in module ng
+		$location->$locationProvider->service in module ng
+		$http->$httpProvider->service in module ng
+
+$q
+	info:用来异步运行函数的一个服务，当函数进程介绍时，使用它们的返回值。
+		是一个 promise/deferred对象的实现。
+	Dependencies:$rootScope.
+	Usage:
+		$q(resolver):
+			resolver:function type. function(function,function){}.
+			函数负责 resolving或 rejecting新创建的 promise。
+		Methods:
+			defer():
+				//
+			reject(reason);
+				//
+			when(value,[seccessCallback],[errorCallback],[progressCallback])
+				Returns a promise of th passed value or promise.
+			resolve(value,[seccessCallback],[errorCallback],[progressCallback])
+				when 方法的化名，为了和 ES6命名保持一致。
+			all(promise)
+				所有的 promise 联合进一个 promise 中，解决所有，才能解决当下。
