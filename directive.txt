@@ -1,0 +1,77 @@
+dirctive
+	△stages:compile stage VS link stage
+	△directive with tpl:module.directive("directivename",function(){return {key:value};});
+		restrict:AECM.
+			C中的内容需要与注释符存留一个空格。
+			指令名称与对应所匹配的类型一样则可以绑定。 A|E|C|M
+			如指令名为 superman,restrict值为"E",html中对应的<superman></superman>则绑定该指令。
+		template:
+			tranclude:<div ng-transclude></div>标定嵌套位置。
+		templateurl:
+		compile:
+			default:
+			customize:
+			注：
+				只在编译时，运行一次。
+				会返回 preLink & postLink函数。preLink 中不能做修改 DOM结构的任务，否则报错。
+		link:
+			对每一条指令运行 link 函数。
+			用于
+				①操作 DOM；
+				②绑定事件监听器。
+				③响应指令，实现双向绑定。
+			function(scope,element,attrs,parent.controller)
+			父控制器可选，当前指令有依赖指令时，才会有该参数。
+			scope 就是当下模板所产生的 DOM 对应的 scope。按照域链本质可知其能访问父级属性。
+			>内部调用的方法可以有三种方案：
+				1>scope.controller.fn()\scope.fn()
+				2>scope.$apply("[controllername].fn()")\scope.$apply("fn()").
+				3>在html 的相应指令标签中自定义个属性,将需要使用的方法放在该属性中如：
+				<hello howToLoadData="loadData()"></hello>
+				<hello howToLoadData="infoCtrl.loadData2()"></hello>
+				->link中的调用语法为：scope.$apply(attrs.howtoload);
+				需要注意：1>属性在被转化到 attrs 对象时，其 key 都被转化为小写，即使是驼峰写法，调用时也要转成全小写。
+				2>直接调用属性，不要当成方法调用，不需要加小括号。
+			>注：
+				对于指令的每个实例，link 函数都会运行一次。
+				只会返回 postLink 函数。如果需要修改 DOM 结构，应该在 postLink 中来完成，如果在 preLink 中做，则会导致报错。
+		replace:
+			默认为 false,如果设置为 true,则模板会替换掉指令标签，和指令属性所依赖标签等。
+			如果 template:"<h3>hello,angular</h3>对应指令hello
+			<hello></hello> ===><h3>hello,angular</h3>
+			<div hello=""></div> ===><h3 hello=""></h3>
+			<div class="hello"></div> ===><h3 class="hello">hello,angular</h3>
+		scope: 如果指令复用，需要定义独立作用域，否则指向同一个作用域实例。
+			scope 绑定策略：@，=，&。
+			"@"绑定：把当前属性作为字符串传递。还可以绑定来自外处 scope 的值，在属性值中插入{{}}即可。 
+				如指令标签<directive atrr="{{controller.atrr}}"></directive>，
+				指令方法中{template:"<div>{{attr}}</div>",scope:{attr:"@"}}
+				directive中的 scope 属性名和指令标签中的属性名一一对应。
+			"="与父scope 中的属性进行双向绑定。其传的是对象，而非字符串。
+				如指令标签<directive atrr="controller.atrr"></directive>，
+				指令方法中{template:"<input ng-model='attr' type='text'/>",scope:{attr:"@"}}
+			"&"传递一个来自父 scope 的函数，稍后调用。
+				用于事件型。
+				指令标签：<hello Greeting="sayHello(word)"></hello>
+				指令返回对象：return{scope:{greeting:"&"},template:'<input ng-model="saying" type="text"/><br/><button ng-click="greeting({wording:saying})"'}
+				注：1>指令标签的属性在被指令方法调用时，分两种情况：
+				①指令命名时用驼峰规则，使用时用-分割各单词。如：定义myDirective，使用时像这样：<my-directive>。
+				发现带连接符的('-'、'_')，属性名转化为 camel 形式调用。
+				②不带连接符的，属性名转化为toLowerCase的形式调用。
+				2>指令标签属性可以通过直接匹配调用法scope{[attr]:"@||#||&"}或 scope{[customizeAttrName:"@||#||&"+[attr]]}。
+				3>①自定义属性一旦定义，则其相当于重写指令元素的$scope，将使得指令标签及其子标签无法获取 parentScope 属性。
+				②自定义在 scope 中的属性可以直接为 template及 templateurl 中的指令所用。
+	
+		controller:
+			function($scope)
+			指令内部 controller。用于为指令暴露方法给外部调用。相较于 link 只是用来处理指令内部事务。
+			其中传入的$scope，分一般指令和子指令方法中所传的域对象。controller 方法中以及子指令中 link 方法所传入的 scope 对象等于什么？
+				1>默认是继承域链作用域和属性的对应当下节点的局域，可以直接访问到父级域内容。如果自定义 scope 属性，则重写域，指向所定义的对象，所以不具备继承父级域的及其属性的特点.
+				2>link 中 scope 的对象，等于自身定义 scope||父级 scope。如果重定义 scope 属性，则指向该自定义对象，否则指向父指令的 scope。
+				2>this指向该 controller 实例。
+			Object.keys(scope):【这是子 directive 中link 对于父级 controller 方法的调用导出】["$id", "$$childTail", "$$childHead", "$$prevSibling", "$$nextSibling", "$$watchers", "$parent", "$$phase", "$root", "$$destroyed", "$$listeners", "$$listenerCount", "$$watchersCount", "$$isolateBindings", "title", "shoMe", "toggle", "showMe"]
+			
+		require：
+			指定所依赖的指令名称。"^[dependentDirectiveName]"
+			有了依赖，该指令中的 link 函数就可以接收到所依赖指令的内部 controller 的返回对象
+	
